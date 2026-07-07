@@ -1,0 +1,76 @@
+feedpak_version: 1.14.0
+title: Example Song
+artist: Example Artist
+duration: 213.123
+arrangements:
+- id: bass
+  name: Bass
+  file: arrangements/bass.json
+  tuning:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  capo: 0
+  centOffset: 0.0
+- id: lead
+  name: Lead
+  file: arrangements/lead.json
+  tuning:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  capo: 0
+  centOffset: 0.0
+- id: lead_1
+  name: Lead2
+  file: arrangements/lead_1.json
+  tuning:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  capo: 0
+  centOffset: 0.0
+- id: rhythm
+  name: Rhythm
+  file: arrangements/rhythm.json
+  tuning:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  capo: 0
+  centOffset: 0.0
+stems:
+- id: full
+  file: stems/full.ogg
+  default: true
+authors:
+- name: feedpak psarc converter
+  role: transcriber
+lyrics: lyrics.json
+language: ja
+lyric_tracks:
+- id: ja
+  file: lyrics.json
+  language: ja
+  kind: original
+  name: 日本語
+- id: romaji
+  file: lyrics_romaji.json
+  language: ja-Latn
+  kind: transliteration
+  name: Romaji
+album: Example Album
+year: 2024
+cover: gfx/cover.png

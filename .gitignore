@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+wheels/
+*.egg-info
+.eggs/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# uv lockfile is tracked; only the cache is ignored
+.uv-cache/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Project assets: source archives, output packages, and the working song
+# library are large binaries and must never be checked in.
+*.psarc
+*.feedpak
+*.wem
+*.ogg
+*.wav
+*.dds
+out/
+song_lib/
+.*.build/
