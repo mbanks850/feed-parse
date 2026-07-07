@@ -39,7 +39,7 @@ def _pad16(data: bytes) -> bytes:
 def _try_decrypt_inflate(data: bytes, key: bytes) -> bytes:
     """Decrypt with ``key`` and inflate. Raises on failure."""
     iv = data[8:24]
-    (ctr_init,) = struct.unpack(">I", iv[:4])
+    ctr_init = int.from_bytes(iv, "big")
     payload = data[24 : len(data) - 56]
     cipher = AES.new(key, AES.MODE_CTR, initial_value=ctr_init, nonce=b"")
     decrypted = cipher.decrypt(_pad16(payload))
