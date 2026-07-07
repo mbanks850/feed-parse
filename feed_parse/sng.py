@@ -209,16 +209,16 @@ def parse_sng(buf: bytes) -> dict[str, Any]:
     events_len = b.u32()
     events = [action() for _ in range(events_len)]
 
-    def tone() -> dict[str, Any]:
+    def _read_tone() -> dict[str, Any]:
         t = b.f32()
         i = b.u32()
         return {"time": round6(t), "id": i}
 
     tone_len = b.u32()
-    tone = [tone() for _ in range(tone_len)]
+    tone = [_read_tone() for _ in range(tone_len)]
 
     dna_len = b.u32()
-    dna = [tone() for _ in range(dna_len)]
+    dna = [_read_tone() for _ in range(dna_len)]
 
     sections = array(lambda: {
         "name": utf8_z(b.take(32)),
