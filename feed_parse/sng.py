@@ -36,19 +36,11 @@ def _pad16(data: bytes) -> bytes:
     return data + bytes(n)
 
 
-def decrypt_sng(data: bytes, platform: str = "mac") -> bytes:
-    """AES CTR decrypt an SNG payload and inflate the zlib body.
-
-    If ``data`` does not begin with the SNG magic it is returned unchanged;
-    this makes the function safe to call on already decrypted SNG bodies.
-    """
-    magic = struct.unpack("<I", data[:4])[0]
-    if magic != SNG_MAGIC:
-        return data
+def _try_decrypt_inflate(data: bytes, key: bytes) -> bytes:
+    """Decrypt with ``key`` and inflate. Raises on failure."""
     iv = data[8:24]
     (ctr_init,) = struct.unpack(">I", iv[:4])
     payload = data[24 : len(data) - 56]
-    key = MAC_KEY if platform == "mac" else WIN_KEY
     cipher = AES.new(key, AES.MODE_CTR, initial_value=ctr_init, nonce=b"")
     decrypted = cipher.decrypt(_pad16(payload))
     (uncompressed_len,) = struct.unpack("<I", decrypted[:4])
@@ -56,9 +48,29 @@ def decrypt_sng(data: bytes, platform: str = "mac") -> bytes:
     try:
         out = zlib.decompress(body)
     except zlib.error:
-        # Some toolkits append trailing pad bytes; let zlib find the real end.
         out = zlib.decompressobj().decompress(body)
     return out[:uncompressed_len] if uncompressed_len else out
+
+
+def decrypt_sng(data: bytes, platform: str = "mac") -> bytes:
+    """AES CTR decrypt an SNG payload and inflate the zlib body.
+
+    If ``data`` does not begin with the SNG magic it is returned unchanged;
+    this makes the function safe to call on already decrypted SNG bodies.
+
+    When the preferred key (based on *platform*) fails decompression the
+    other key is attempted automatically. This handles ``generic`` paths
+    that can be encrypted with either key.
+    """
+    magic = struct.unpack("<I", data[:4])[0]
+    if magic != SNG_MAGIC:
+        return data
+    primary = MAC_KEY if platform == "mac" else WIN_KEY
+    fallback = WIN_KEY if platform == "mac" else MAC_KEY
+    try:
+        return _try_decrypt_inflate(data, primary)
+    except (zlib.error, struct.error):
+        return _try_decrypt_inflate(data, fallback)
 
 
 def _read_bend(b: Bin) -> dict[str, Any]:
