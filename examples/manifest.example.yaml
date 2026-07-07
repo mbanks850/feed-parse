@@ -56,7 +56,7 @@ stems:
   file: stems/full.ogg
   default: true
 authors:
-- name: feedpak psarc converter
+- name: feed_parse psarc converter
   role: transcriber
 lyrics: lyrics.json
 language: ja

@@ -1,6 +1,6 @@
 """A small big endian / little endian cursor over a bytes buffer.
 
-Used by :mod:`feedpak.sng` to walk the decrypted SNG body. Kept here so the
+Used by :mod:`feed_parse.sng` to walk the decrypted SNG body. Kept here so the
 SNG parser reads like the binary format reference instead of mixing raw
 ``struct.unpack_from`` calls with manual offset bookkeeping.
 """

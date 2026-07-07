@@ -1,8 +1,8 @@
 """Command line entry point.
 
-Invocable as ``feedpak SRC OUT [-z] [--audio PATH]``. The ``feedpak``
+Invocable as ``feed-parse SRC OUT [-z] [--audio PATH]``. The ``feed-parse``
 command is registered by ``pyproject.toml`` via the
-``feedpak.cli:main`` script entry point.
+``feed_parse.cli:main`` script entry point.
 """
 
 import argparse
@@ -16,7 +16,7 @@ __all__ = ["main"]
 
 def _build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
-        prog="feedpak",
+        prog="feed-parse",
         description="Convert a Rocksmith .psarc into a feedpak v1 package.",
     )
     ap.add_argument("src", help="source .psarc path")

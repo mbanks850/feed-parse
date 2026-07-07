@@ -8,8 +8,8 @@ A packed SNG is::
     encrypted_payload(...)   # AES CTR encrypted
     signature(56)            # RSA signature, ignored by this tool
 
-AES CTR is keyed with :data:`feedpak.constants.MAC_KEY` for macOS archives
-and :data:`feedpak.constants.WIN_KEY` for Windows archives. The initial
+AES CTR is keyed with :data:`feed_parse.constants.MAC_KEY` for macOS archives
+and :data:`feed_parse.constants.WIN_KEY` for Windows archives. The initial
 counter value is the first 4 bytes of the IV read big endian. The decrypted
 payload begins with a uint32 LE *uncompressed length* followed by a zlib
 compressed SNG body.

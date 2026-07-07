@@ -1,6 +1,8 @@
-# feedpak
+# feed-parse
 
 Convert Rocksmith 2014 CDLC `.psarc` archives into [feedpak v1](https://got-feedback.github.io/feedpak-spec/feedpak-v1.html) packages.
+
+`feed-parse` is the converter. `feedpak` is the name of the target format (owned by the feedpak spec project, not this repo). Don't confuse the two.
 
 The converter decrypts the PSARC table of contents, unpacks and decrypts every SNG arrangement, picks the densest difficulty level for each chart, transcodes WEM audio to Ogg Vorbis, converts the DDS album art to PNG, and emits top level `lyrics.json` (plus a `lyric_tracks` block when the CDLC ships both `vocals` and `jvocals`).
 
@@ -13,23 +15,23 @@ Pick whichever fits your workflow.
 ### uvx (zero install, runs from git)
 
 ```bash
-uvx --from git+https://github.com/HRNPH/feedpak feedpak song.psarc out/song.feedpak -z
+uvx --from git+https://github.com/HRNPH/feed-parse feed-parse song.psarc out/song.feedpak -z
 ```
 
 ### pip from git
 
 ```bash
-pip install git+https://github.com/HRNPH/feedpak
-feedpak song.psarc out/song.feedpak -z
+pip install git+https://github.com/HRNPH/feed-parse
+feed-parse song.psarc out/song.feedpak -z
 ```
 
 ### Local development clone
 
 ```bash
-git clone https://github.com/HRNPH/feedpak
-cd feedpak
+git clone https://github.com/HRNPH/feed-parse
+cd feed-parse
 uv sync
-uv run feedpak song.psarc out/song.feedpak -z
+uv run feed-parse song.psarc out/song.feedpak -z
 ```
 
 ## External binaries
@@ -47,7 +49,7 @@ If `vgmstream-cli` is missing the converter still runs but writes the raw WEM by
 ## Usage
 
 ```bash
-feedpak SRC OUT [-z] [--audio PATH]
+feed-parse SRC OUT [-z] [--audio PATH]
 ```
 
 * `SRC` is a `.psarc` archive.
@@ -60,25 +62,25 @@ feedpak SRC OUT [-z] [--audio PATH]
 Emit a `.feedpak` zip:
 
 ```bash
-feedpak song.psarc out/song.feedpak -z
+feed-parse song.psarc out/song.feedpak -z
 ```
 
 Emit an unpacked directory (handy for inspection):
 
 ```bash
-feedpak song.psarc out/song.feedpak
+feed-parse song.psarc out/song.feedpak
 ```
 
 Override the embedded audio:
 
 ```bash
-feedpak song.psarc out/song.feedpak -z --audio path/to/full.ogg
+feed-parse song.psarc out/song.feedpak -z --audio path/to/full.ogg
 ```
 
 Run as a module without installing:
 
 ```bash
-uv run python -m feedpak song.psarc out/song.feedpak -z
+uv run python -m feed_parse song.psarc out/song.feedpak -z
 ```
 
 ## Output layout
@@ -109,7 +111,7 @@ A small shell helper, [`convert_all.sh`](convert_all.sh), recursively converts e
 
 ## Package layout
 
-The converter is split into focused modules under `feedpak/`:
+The Python package is `feed_parse` (underscore because Python identifiers cannot contain hyphens). It is split into focused modules under `feed_parse/`:
 
 | Module        | Responsibility                                                       |
 | ------------- | ------------------------------------------------------------------- |
@@ -120,7 +122,7 @@ The converter is split into focused modules under `feedpak/`:
 | `media.py`    | WEM to OGG transcoding and DDS to PNG conversion                    |
 | `metadata.py` | Song level fields from the RS2014 manifest JSON                     |
 | `convert.py`  | Top level orchestration tying the above stages together             |
-| `cli.py`      | Argparse entry point (`feedpak` command)                            |
+| `cli.py`      | Argparse entry point (registers the `feed-parse` command)           |
 | `binary.py`   | Small little endian byte cursor used by the SNG parser              |
 | `constants.py`| AES keys, magic numbers, and note technique bit masks               |
 

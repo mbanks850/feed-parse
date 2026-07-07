@@ -37,14 +37,14 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Make sure the venv exists.
-if [[ ! -x "$SCRIPT_DIR/.venv/bin/feedpak" ]]; then
+if [[ ! -x "$SCRIPT_DIR/.venv/bin/feed-parse" ]]; then
     echo "Bootstrapping venv (uv sync)..."
     (cd "$SCRIPT_DIR" && uv sync)
 fi
 
-CLI="$SCRIPT_DIR/.venv/bin/feedpak"
+CLI="$SCRIPT_DIR/.venv/bin/feed-parse"
 if [[ ! -x "$CLI" ]]; then
-    echo "feedpak CLI not found at $CLI" >&2
+    echo "feed-parse CLI not found at $CLI" >&2
     exit 1
 fi
 

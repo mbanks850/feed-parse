@@ -6,17 +6,17 @@ and an output path; everything else is internal.
 
 The work splits into five stages, each delegated to a focused module:
 
-1. **PSARC container** (:mod:`feedpak.psarc`): decrypt the TOC, reassemble
+1. **PSARC container** (:mod:`feed_parse.psarc`): decrypt the TOC, reassemble
    every internal file into an in memory ``{path: bytes}`` map.
-2. **Metadata** (:mod:`feedpak.metadata`): pull song level fields out of
+2. **Metadata** (:mod:`feed_parse.metadata`): pull song level fields out of
    the RS2014 manifest JSON.
-3. **Arrangements** (:mod:`feedpak.sng` + :mod:`feedpak.chart`): decrypt
+3. **Arrangements** (:mod:`feed_parse.sng` + :mod:`feed_parse.chart`): decrypt
    and parse each ``.sng`` file, then project to a feedpak arrangement
    dict. Vocal arrangements are diverted into lyric sources.
-4. **Lyrics** (:mod:`feedpak.lyrics`): emit top level ``lyrics.json``
+4. **Lyrics** (:mod:`feed_parse.lyrics`): emit top level ``lyrics.json``
    (and ``lyrics_romaji.json`` when both Japanese and romanized tracks
    exist).
-5. **Media** (:mod:`feedpak.media`): transcode the WEM stem to OGG and
+5. **Media** (:mod:`feed_parse.media`): transcode the WEM stem to OGG and
    convert the DDS album art to PNG.
 
 Finally the manifest is composed and either written to a directory or
@@ -283,7 +283,7 @@ def convert(
         "arrangements": arrangements_manifest,
         "stems": stem_entries,
         "authors": [
-            {"name": "feedpak psarc converter", "role": "transcriber"}
+            {"name": "feed_parse psarc converter", "role": "transcriber"}
         ],
     }
     if primary_lyrics:
